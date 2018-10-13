@@ -1,4 +1,4 @@
-function [ Iregistered, M] = affineReg2D( Imoving, Ifixed )
+function [ Iregistered, M, x] = affineReg2D_withx( Imoving, Ifixed, x )
 %Example of 2D affine registration
 %   Robert Martí  (robert.marti@udg.edu)
 %   Based on the files from  D.Kroon University of Twente 
@@ -7,8 +7,8 @@ function [ Iregistered, M] = affineReg2D( Imoving, Ifixed )
 %clear all; close all; clc;
 
 % Read two imges 
-%Imoving=im2double(rgb2gray(imread('brain1.png'))); 
-%Ifixed=im2double(rgb2gray(imread('brain2.png')));
+% Imoving=im2double(rgb2gray(imread('brain1.png'))); 
+% Ifixed=im2double(rgb2gray(imread('brain2.png')));
 
 Im=Imoving;
 If=Ifixed;
@@ -18,21 +18,24 @@ If_smooth = imgaussfilt(If);
 mtype = 'gcc'; % metric type: sd: ssd gcc: gradient correlation; cc: cross-correlation
 ttype = 'a'; % rigid registration, options: r: rigid, a: affine
 
-if mtype == 'gcc'
-    Im_smooth = imgradient(Im_smooth);
-    If_smooth = imgradient(If_smooth);
-    imshow(If_smooth,[]);
+   
 % Parameter scaling of the Translation and Rotation
 % and initial parameters
 switch ttype
     case 'r'
-        x=[0 0 0];
+        if ~exist('x','var')
+            x=[0 0 0];
+        end
         scale = [1 1 0.1];
     case 'a'
-        x=[ 1 0 0 ;
+        if ~exist('x','var')
+            x=[ 1 0 0 ;
             0 1 0 ];
-        %scale = [1000 1000 0.1 ; 1000 1000 0.1];
-        scale = [0.1 0.1 10 ; 0.1 0.1 10];
+        end
+        
+%         scale = [0.001 0.001 10 ; 0.001 0.001 10]; % for 1 and 2 
+%         scale = [0.1 0.1 10 ; 0.1 0.1 10]; % for 1 and 3 
+        scale = [0.01 0.01 1; 0.01 0.01 1]; % for 1 and 4 
 end
 
 
@@ -40,7 +43,7 @@ end
 x=x./scale;
     
     
-[x]=fminsearch(@(x)affine_registration_function(x,scale,Im_smooth,If_smooth,mtype,ttype),x,optimset('Display','iter','MaxIter',2000, 'TolFun', 1.000000e-10,'TolX',1.000000e-10, 'MaxFunEvals', 1000*length(x), 'PlotFcns',@optimplotfval));
+[x]=fminsearch(@(x)affine_registration_function(x,scale,Im_smooth,If_smooth,mtype,ttype),x,optimset('MaxIter',1000, 'TolFun', 1.000000e-10,'TolX',1.000000e-10, 'MaxFunEvals', 1000*length(x), 'PlotFcns',@optimplotfval));
 
 x=x.*scale;
 

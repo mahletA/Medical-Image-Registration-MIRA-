@@ -56,7 +56,7 @@ switch mtype
     case 'gcc'
         [im_Gx,im_Gy] = imgradientxy(I3);
         [if_Gx,if_Gy] = imgradientxy(Ifixed);
-        e = -( NormalizedGCC (im_Gx,im_Gy,if_Gx,if_Gy));
+        e = -abs( NormalizedGCC (im_Gx,im_Gy,if_Gx,if_Gy));
     otherwise
         error('Unknown metric type');
 end

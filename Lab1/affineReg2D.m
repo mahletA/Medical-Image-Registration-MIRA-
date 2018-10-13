@@ -7,8 +7,8 @@ function [ Iregistered, M] = affineReg2D( Imoving, Ifixed )
 %clear all; close all; clc;
 
 % Read two imges 
-%Imoving=im2double(rgb2gray(imread('brain1.png'))); 
-%Ifixed=im2double(rgb2gray(imread('brain2.png')));
+% Imoving=im2double(rgb2gray(imread('brain1.png'))); 
+% Ifixed=im2double(rgb2gray(imread('brain2.png')));
 
 Im=Imoving;
 If=Ifixed;
@@ -28,8 +28,8 @@ switch ttype
     case 'a'
         x=[ 1 0 0 ;
             0 1 0 ];
-        %scale = [0.001 0.001 10 ; 0.001 0.001 10];
-        scale = [0.1 0.1 10 ; 0.1 0.1 10];
+%         scale = [0.001 0.001 10 ; 0.001 0.001 10]; % for 1 and 2
+        scale = [0.1 0.1 10 ; 0.1 0.1 10]; % for 1 and 3 
 end
 
 
@@ -37,7 +37,7 @@ end
 x=x./scale;
     
     
-[x]=fminsearch(@(x)affine_registration_function(x,scale,Im_smooth,If_smooth,mtype,ttype),x,optimset('Display','iter','MaxIter',2000, 'TolFun', 1.000000e-10,'TolX',1.000000e-10, 'MaxFunEvals', 1000*length(x), 'PlotFcns',@optimplotfval));
+[x]=fminsearch(@(x)affine_registration_function(x,scale,Im_smooth,If_smooth,mtype,ttype),x,optimset('MaxIter',2000, 'TolFun', 1.000000e-10,'TolX',1.000000e-10, 'MaxFunEvals', 1000*length(x), 'PlotFcns',@optimplotfval));
 
 x=x.*scale;
 
