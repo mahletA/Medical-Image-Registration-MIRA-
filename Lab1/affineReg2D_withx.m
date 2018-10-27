@@ -15,7 +15,7 @@ If=Ifixed;
 
 Im_smooth = imgaussfilt(Im);
 If_smooth = imgaussfilt(If);
-mtype = 'gcc'; % metric type: sd: ssd gcc: gradient correlation; cc: cross-correlation
+mtype = 'sd'; % metric type: sd: ssd gcc: gradient correlation; cc: cross-correlation
 ttype = 'a'; % rigid registration, options: r: rigid, a: affine
 
    
@@ -34,8 +34,8 @@ switch ttype
         end
         
 %         scale = [0.001 0.001 10 ; 0.001 0.001 10]; % for 1 and 2 
-%         scale = [0.1 0.1 10 ; 0.1 0.1 10]; % for 1 and 3 
-        scale = [0.01 0.01 1; 0.01 0.01 1]; % for 1 and 4 
+         scale = [0.1 0.1 10 ; 0.1 0.1 10]; % for 1 and 3 
+%         scale = [0.01 0.01 1; 0.01 0.01 1]; % for 1 and 4 
 end
 
 
@@ -72,7 +72,7 @@ subplot(2,2,2), imshow(Im);
 subplot(2,2,3), imshow(Icor);
 subplot(2,2,4), imshow(abs(If-Icor));
 
-%imwrite(Icor, './Results/brain1_to_brain4_reg_cc.png');
+%imwrite(Icor, './Results/brain1_to_brain3_reg_cc.png');
 Iregistered = Icor;
 end
 

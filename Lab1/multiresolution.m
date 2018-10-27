@@ -51,9 +51,10 @@ for i=1:res_level
         %register
         [ Iregistered , M, x] = affineReg2D_withx( Imoving_res{i}, Ifixed_res{i}, x );
         
-        size(Iregistered)
+        %size(Iregistered)
     end
      
 end
+%imwrite(Iregistered, './Results/brain1_to_brain3_reg_sd_MR.png');
 
 end
